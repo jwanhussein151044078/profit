@@ -51,14 +51,14 @@ module.exports = {
       },
       delivery_date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       discount_rate: {
-        type: DataTypes.DECIMAL(3,4),
+        type: DataTypes.DECIMAL(7,4),
         allowNull: false,
       },
       vat_witholding_rate: {
-        type: DataTypes.DECIMAL(3,4),
+        type: DataTypes.DECIMAL(7,4),
         allowNull: false,
       }
     },{schema:process.env.DB_SCHEMA});

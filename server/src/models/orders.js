@@ -4,22 +4,68 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class orders extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.customers,{foreignKey:'customer_id',as:'customer'});
     }
   }
   orders.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING
+    customer_id : {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    order_status : {
+      type: DataTypes.STRING(32),
+      allowNull: false,
+    },
+    order_number : {
+      type: DataTypes.STRING(32),
+      allowNull: false,
+    },
+    order_date : {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    subtotal : {
+      type: DataTypes.DECIMAL(15,4),
+      allowNull: false,
+    },
+    total_with_tax : {
+      type: DataTypes.DECIMAL(15,4),
+      allowNull: false,
+    },
+    primary_rate:{
+      type: DataTypes.DECIMAL(15,8),
+      allowNull: false,
+    },
+    secondary_rate:{
+      type: DataTypes.DECIMAL(15,8),
+      allowNull: false,
+    },
+    invoice_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    //  defaultValue: Sequelize.fn('now')
+    },
+    invoice_number: {
+      type: DataTypes.STRING(32),
+      allowNull: false,
+    },
+    payment_type: {
+      type: DataTypes.STRING(32),
+      allowNull: false,
+    },
+    currency:{
+      type: DataTypes.STRING(16),
+      allowNull: false,
+    },
+    notes: {
+      type: DataTypes.STRING
+    }
   }, {
     sequelize,
-    modelName: 'orders',
+    modelName  : 'orders',
+    tableName  : 'orders',
+    timestamps : false,
   });
   return orders;
 };

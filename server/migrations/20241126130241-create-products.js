@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false,
       },
       discount_rate : {
-        type: DataTypes.DECIMAL(3,4),
+        type: DataTypes.DECIMAL(7,4),
         allowNull: false,
       }
     },{schema:process.env.DB_SCHEMA});

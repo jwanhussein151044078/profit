@@ -4,22 +4,36 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class products extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      
     }
   }
   products.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING
+    product_name :{
+      type: DataTypes.STRING(256),
+      allowNull: false,
+    },
+    product_unit :{
+      type: DataTypes.STRING(16),
+      allowNull: false,
+    },
+    unit_price :{
+      type: DataTypes.DECIMAL(15,4),
+      allowNull: false,
+    },
+    vat_rate : {
+      type: DataTypes.DECIMAL(15,4),
+      allowNull: false,
+    },
+    discount_rate : {
+      type: DataTypes.DECIMAL(7,4),
+      allowNull: false,
+    }
   }, {
     sequelize,
-    modelName: 'products',
+    modelName  : 'products',
+    tableName  : 'products',
+    timestamps : false,
   });
   return products;
 };

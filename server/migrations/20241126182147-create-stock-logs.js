@@ -29,7 +29,7 @@ module.exports = {
       },
       credit_cost:{
         type: DataTypes.DECIMAL(15,4),
-        allowNull: false,
+        allowNull: true,
       },
       primary_rate:{
         type: DataTypes.DECIMAL(15,8),
