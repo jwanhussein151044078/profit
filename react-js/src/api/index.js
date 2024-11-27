@@ -1,0 +1,1 @@
+export * as axois from "./axios";

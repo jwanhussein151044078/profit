@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-pagination {
+  padding-inline: 20px; /* Add some padding */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
