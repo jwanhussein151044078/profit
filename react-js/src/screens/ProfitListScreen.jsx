@@ -1,8 +1,14 @@
-import { Col, Flex, Radio, Row, Space } from "antd";
+import { Col, Flex, Row } from "antd";
 import React from "react";
 import { OrdersTable, RadioBtn } from "../components";
+import { CURRENCY, LISTINGMETHOD } from "../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { getAppSettings, toggleCurrency, toggleListingMethod } from "../features";
 
 export function ProfitListScreen(){
+  const settings = useSelector(getAppSettings);
+  const dispatch = useDispatch();
+  console.log(settings);
   return (
     <Row className="h-full mr-0 ml-0 bg-transparent" gutter={16}>
       <Col span={19} className="rounded-lg px-4 bg-transparent">
@@ -17,18 +23,17 @@ export function ProfitListScreen(){
             <div className="w-full h-1/2">
               <text className="font-bold text-lg text-gray-600"> Listeleme </text>
               <RadioBtn
-                options = {[{label:"Siparişe Göre",value:"1"},{label:"ürüne Göre",value:"2"}]}
-                value   = {"1"}
-                onChange = {(val)=> console.log(val)}
+                options = {[{label:"Siparişe Göre",value:LISTINGMETHOD.ORDER},{label:"ürüne Göre",value:LISTINGMETHOD.PRODUCT}]}
+                value   = {settings.listingMethod}
+                onChange = {(val)=> dispatch(toggleListingMethod())}
               />
               <div className="h-4"/>
               <text className="font-bold text-lg text-gray-600"> Para Birimi </text>
               <RadioBtn
-                options = {[{label:"USD",value:"USD"},{label:"TL",value:"TL"}]}
-                value   = {"TL"}
-                onChange = {(val)=> console.log(val)}
+                options = {[{label:"USD",value:CURRENCY.USD},{label:"TL",value:CURRENCY.TL}]}
+                value   = {settings.currency}
+                onChange = {(val)=> dispatch(toggleCurrency())}
               />
-              
             </div>
             <div className="w-full h-1/2 flex items-center justify-end flex-col pb-4">          
               <text className="font-bold text-2xl text-gray-600"> Toplam Karlilik </text>
