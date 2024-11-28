@@ -4,7 +4,6 @@ import { Button } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Header } from "antd/es/layout/layout";
 
-
 export function TopBar(props){
   return (
     <Header
