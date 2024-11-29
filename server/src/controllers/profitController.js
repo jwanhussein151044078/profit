@@ -4,7 +4,7 @@ const calcProfit = async (req, res , next) => {
   let {currency} = req.query;  
   try{
     const results = await sequelize.query(`
-        with calculate_difference AS (
+        with calculate_difference as (
           select
               case 
                   when :currency = 'USD' THEN o.subtotal * o.primary_rate
