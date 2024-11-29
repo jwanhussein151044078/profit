@@ -9,7 +9,11 @@ let config = {
   schema : process.env.DB_SCHEMA,
   migrationStorageTableName: "sequelize_migrations",
   seederStorageTableName: "sequelize_seeds",
-  logging : false
+  logging : false,
+  searchPath: process.env.DB_SCHEMA,
+  dialectOptions: {
+    prependSearchPath: true
+  }
 };
 
 module.exports = {

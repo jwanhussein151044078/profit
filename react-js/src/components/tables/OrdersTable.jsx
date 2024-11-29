@@ -1,74 +1,83 @@
 import React from 'react';
-import { Table } from 'antd';
-
-
-const dataSource = Array.from({
-  length: 100,
-}).map((_, i) => ({
-  key: i,
-  name: `Edward King ${i}`,
-  age: 32,
-  address: `London, Park Lane no. ${i}`,
-}));
+import { Table, Tag } from 'antd';
+import { selectAllOrders, useGetOrdersQuery, useGetOrdersTotalNumberQuery } from '../../features/ordersSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAppSettings, onChangeTablePage } from '../../features/appSettingSlice';
 
 export function OrdersTable(props){
-
+  const settings = useSelector(getAppSettings);
+  const dispatch = useDispatch();
+  const { isLoading, isError, error } = useGetOrdersQuery(settings);
+  const orders = useSelector(state => selectAllOrders(state, settings));
+  const { data: totalOrders } = useGetOrdersTotalNumberQuery();
   const columns = [
     {
       title: 'Müşteri',
       width: 150,
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'company_name',
+      key: 'company_name',
       fixed: 'left',
     },
     {
       title: 'Fatura Numarası',
-      width: 100,
-      dataIndex: 'age',
-      key: 'age',
-      //fixed: 'left',
+      width: 150,
+      dataIndex: 'invoice_number',
+      key: 'invoice_number',
     },
     {
       title: 'Toplam Miktar',
-      dataIndex: 'address',
-      key: '1',
+      dataIndex: 'quantity',
+      key: 'quantity',
       width: 150,
     },
     {
       title: 'Toplam Tutar',
-      dataIndex: 'address',
-      key: '2',
+      dataIndex: 'sub_total',
+      key: 'sub_total',
       width: 150,
       fixed: 'left',
     },
     {
       title: 'Toplam Maliyet',
-      dataIndex: 'address',
-      key: '3',
+      dataIndex: 'total_cost',
+      key: 'total_cost',
       width: 150,
     },
     {
       title: 'Toplam Karlılık',
-      dataIndex: 'address',
-      key: '4',
+      dataIndex: 'total_profit',
+      key: 'total_profit',
       width: 150,
+      render: (total_profit) =>{ 
+        let total = parseFloat(total_profit);
+        return <Tag color={total > 0 ? "green" : total == 0 ? "lightgray" : "red"}>
+          {total_profit}
+        </Tag>
+      }, 
     }
   ];
   
   return (
     <div className='h-full w-full'>
       <Table
-        className={"h-full "}
+        rowHoverable
+        rowClassName = {"font-medium"}
+        className={"h-full"}
+        size='small'
         columns={columns}
-        dataSource={dataSource}
+        dataSource={orders}
         scroll={{
           x: '100%',
           y: `calc(100vh - 300px)` 
         }}
+        loading = {isLoading}
         pagination ={{
-          current  : 2,
-          pageSize : 15,
-          onChange : (page,pageSize) => console.log(page,pageSize)
+          total    : totalOrders?.data,
+          current  : settings.page,
+          pageSize : settings.pageSize,
+          onChange : (page,pageSize) => dispatch(onChangeTablePage({page,pageSize})),
+          pageSizeOptions : [10,15,20,25],
+          showSizeChanger : true,
         }}
       />
     </div>

@@ -1,19 +1,22 @@
 import { Col, Flex, Row } from "antd";
 import React from "react";
-import { OrdersTable, RadioBtn } from "../components";
+import { OrdersTable, ProductsTable, RadioBtn } from "../components";
 import { CURRENCY, LISTINGMETHOD } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
-import { getAppSettings, toggleCurrency, toggleListingMethod } from "../features";
+import { getAppSettings, toggleCurrency, toggleListingMethod } from "../features/appSettingSlice";
 
 export function ProfitListScreen(){
   const settings = useSelector(getAppSettings);
   const dispatch = useDispatch();
-  console.log(settings);
   return (
     <Row className="h-full mr-0 ml-0 bg-transparent" gutter={16}>
       <Col span={19} className="rounded-lg px-4 bg-transparent">
         <div className="flex items-center justify-center h-full bg-white rounded-lg">
-          <OrdersTable/>
+          {settings.listingMethod == LISTINGMETHOD.ORDER ?
+              <OrdersTable/>
+            :
+              <ProductsTable/>  
+          }
         </div>
       
       </Col>
@@ -30,8 +33,8 @@ export function ProfitListScreen(){
               <div className="h-4"/>
               <text className="font-bold text-lg text-gray-600"> Para Birimi </text>
               <RadioBtn
-                options = {[{label:"USD",value:CURRENCY.USD},{label:"TL",value:CURRENCY.TL}]}
-                value   = {settings.currency}
+                options  = {[{label:"USD",value:CURRENCY.USD},{label:"TL",value:CURRENCY.TL}]}
+                value    = {settings.currency}
                 onChange = {(val)=> dispatch(toggleCurrency())}
               />
             </div>

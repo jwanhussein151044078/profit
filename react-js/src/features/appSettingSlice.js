@@ -3,7 +3,9 @@ import { CURRENCY, LISTINGMETHOD } from "../constants";
 
 const initialState = {
   currency       : CURRENCY.USD,
-  listingMethod  : LISTINGMETHOD.ORDER
+  listingMethod  : LISTINGMETHOD.ORDER,
+  page           : 1,
+  pageSize       : 25
 };
 
 const appSettingSlice = createSlice({
@@ -23,10 +25,15 @@ const appSettingSlice = createSlice({
       }else{
         state.listingMethod = LISTINGMETHOD.ORDER;
       }
+      state.page = 1 ;
+    },
+    onChangeTablePage(state,action){
+      state.page = action.payload.page;
+      state.pageSize = action.payload.pageSize;
     }
   }
 });
 
 export const getAppSettings = (state) => state.appSettings;
-export const { toggleCurrency, toggleListingMethod } = appSettingSlice.actions;
+export const { toggleCurrency, toggleListingMethod , onChangeTablePage } = appSettingSlice.actions;
 export default appSettingSlice.reducer;
