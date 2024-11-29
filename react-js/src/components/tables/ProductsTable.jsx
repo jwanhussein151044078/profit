@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Table, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAppSettings, onChangeTablePage } from '../../features/appSettingSlice';
 import { selectAllProducts, useGetProductsQuery, useGetProductTotalNumberQuery } from '../../features/productSlice';
+import { AttributesModal } from '../modals';
 
 export function ProductsTable(props){
   const settings = useSelector(getAppSettings);
@@ -10,6 +11,23 @@ export function ProductsTable(props){
   const { isLoading , isFetching } = useGetProductsQuery(settings);
   const products = useSelector(state => selectAllProducts(state, settings));
   const { data: totalProducts } = useGetProductTotalNumberQuery();
+  const [isModalOpen , setIsModalOpen] = useState(false);
+  const [selectedProduct , setSelectedProduct] = useState();
+
+  const openModal=()=>{
+    setIsModalOpen(true)
+  }
+
+  const closeModal =()=>{
+    setSelectedProduct(null);
+    setIsModalOpen(false)
+  }
+
+  const onSelectRow=(record)=>{
+    console.log(record);
+    setSelectedProduct(record.id);
+    openModal();
+  }
   const columns = useMemo(()=>{
     return [
       {
@@ -88,9 +106,14 @@ export function ProductsTable(props){
         }}
         onRow={(record, rowIndex) => {
           return {
-            onClick: (event) => {console.log(record,rowIndex)}
+            onClick: (event) => {onSelectRow(record)}
           };
         }}
+      />
+      <AttributesModal
+        id = {selectedProduct}
+        isModalOpen = {isModalOpen}
+        handleCancel = {closeModal}
       />
     </div>
   );

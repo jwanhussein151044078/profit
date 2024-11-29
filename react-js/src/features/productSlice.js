@@ -26,13 +26,20 @@ export const extendedProductApiSlice = apiSlice.injectEndpoints({
     }),
     getProductTotalNumber:builder.query({
       query: () => `/products/total`,
-    })
+    }),
+    getAttributesByDetailsId :builder.query({
+      query: (id) => `/products/attributes/`+id,
+      transformResponse: (responseData) => {
+        return productsAdapter.setAll(initialState, responseData.data)
+      }
+    }),
   })
 })
 
 export const {
   useGetProductsQuery,
-  useGetProductTotalNumberQuery
+  useGetProductTotalNumberQuery,
+  useGetAttributesByDetailsIdQuery
 } = extendedProductApiSlice;
 
 const selectProductsData = createSelector(

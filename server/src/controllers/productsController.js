@@ -56,7 +56,20 @@ const getProductsListTotalCount = async (req, res , next) => {
   }
 };
 
+const getAttributesByDetailsId = async (req, res , next) => {    
+  try{
+    let result = await req.app.get("db")["attributes"].findAll({
+      where : {orders_products_details_id : req.params.detail_id}
+    });
+    res.status(200).send({status:true,msg:'SUCCESS',data: result})
+  }catch(error){
+    res.status(500);
+    next(error)
+  }
+};
+
 module.exports={
   getProductssList,
-  getProductsListTotalCount
+  getProductsListTotalCount,
+  getAttributesByDetailsId
 }
