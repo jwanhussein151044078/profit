@@ -2,8 +2,7 @@ const { fn, col, literal } = require('sequelize');
 const {sequelize} = require('../models');
 
 const getOrdersList = async (req, res , next) => {
-  let {page , pageSize , currency} = req.query;
-  console.log(page , pageSize , currency)    
+  let {page , pageSize , currency} = req.query;  
   try{
     const results = await sequelize.query(
       `
@@ -14,12 +13,7 @@ const getOrdersList = async (req, res , next) => {
           concat(sum(sl.stock_quantity), ' ', p.product_unit) as quantity,
           round( case when :currency = 'USD' THEN o.subtotal * o.primary_rate ELSE o.subtotal * o.secondary_rate end , 2) as sub_total,
           round(
-            sum(
-              (
-                COALESCE(sl.stock_cost, 0) + 
-                COALESCE(sl.credit_cost, 0) + 
-                COALESCE(sl.shipment_cost, 0)
-              ) * 
+            sum(( sl.stock_cost + sl.shipment_cost + COALESCE(sl.credit_cost, 0)) * 
               case 
                 when :currency = o.currency THEN 1 / o.primary_rate
                 ELSE o.secondary_rate
@@ -49,7 +43,6 @@ const getOrdersList = async (req, res , next) => {
     
     res.status(200).send({status:true,msg:'SUCCESS',data: results})
   }catch(error){
-    console.log(error);
     res.status(500);
     next(error)
   }

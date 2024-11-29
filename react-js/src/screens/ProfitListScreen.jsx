@@ -4,9 +4,12 @@ import { OrdersTable, ProductsTable, RadioBtn } from "../components";
 import { CURRENCY, LISTINGMETHOD } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppSettings, toggleCurrency, toggleListingMethod } from "../features/appSettingSlice";
+import { useGetTotalProfitQuery } from "../features/profilSlice";
+import { TotalProfitComponent } from "../components/presentation";
 
 export function ProfitListScreen(){
   const settings = useSelector(getAppSettings);
+  const {data:profit , isLoading,isFetching} = useGetTotalProfitQuery({currency:settings.currency});
   const dispatch = useDispatch();
   return (
     <Row className="h-full mr-0 ml-0 bg-transparent" gutter={16}>
@@ -39,8 +42,7 @@ export function ProfitListScreen(){
               />
             </div>
             <div className="w-full h-1/2 flex items-center justify-end flex-col pb-4">          
-              <text className="font-bold text-2xl text-gray-600"> Toplam Karlilik </text>
-              <text className="font-bold text-xl text-gray-900 mt-4"> 222.222 USD </text>
+              <TotalProfitComponent loading ={isLoading || isFetching} profit = {profit?.entities["totalProfit"]?.totalProfit}/>
             </div>
           </Flex>
         </div>

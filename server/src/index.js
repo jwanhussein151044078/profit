@@ -16,6 +16,7 @@ app.use(express.json({limit: '200mb'}));
 
 app.use("/orders",require("./routes/ordersRoute"));
 app.use("/products",require("./routes/productsRoute"));
+app.use("/profit",require("./routes/profitRoute"));
 
 app.use(errorHandler);
 

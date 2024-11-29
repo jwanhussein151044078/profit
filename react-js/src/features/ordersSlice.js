@@ -13,7 +13,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     getOrders: builder.query({
       query: ({ page, pageSize, currency }) => `/orders?page=${page}&pageSize=${pageSize}&currency=${currency}`,
       transformResponse: (responseData,_,params) => {
-        console.log(params)
         let currency = params.currency ?? "";
         currency = " " + currency;
         let data = responseData.data.map((d)=>({
